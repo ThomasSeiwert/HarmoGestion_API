@@ -1,5 +1,6 @@
 package fr.afpa.cda19.harmogestionapi.controllers;
 
+import fr.afpa.cda19.harmogestionapi.models.Cours;
 import fr.afpa.cda19.harmogestionapi.services.CoursService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -84,8 +85,8 @@ public class CoursController {
             @RequestBody
             final Cours cours, final BindingResult result) {
 
-        if (result.hasErrors() || cours.getId() != null) {
-            return new ResponseEntity<Cours>(HttpStatus.BAD_REQUEST);
+        if (cours.getIdCours() != null || result.hasErrors()) {
+            return new ResponseEntity<Cours>(HttpStatus.BAD_REQUEST).getBody();
         } else {
             return coursService.saveCours(cours);
         }
@@ -107,10 +108,8 @@ public class CoursController {
             @RequestBody
             final Cours cours, final BindingResult result) {
 
-        if (getCours(id) == null) {
-            return new ResponseEntity<Cours>(HttpStatus.BAD_REQUEST);
-        } else if (result.hasErrors()) {
-            return new ResponseEntity<Cours>(HttpStatus.BAD_REQUEST);
+        if (getCours(id) == null || result.hasErrors()) {
+            return new ResponseEntity<Cours>(HttpStatus.BAD_REQUEST).getBody();
         } else {
             return coursService.saveCours(cours);
         }

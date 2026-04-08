@@ -1,5 +1,7 @@
 package fr.afpa.cda19.harmogestionapi.services;
 
+import fr.afpa.cda19.harmogestionapi.models.Cours;
+import fr.afpa.cda19.harmogestionapi.repositories.CoursRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
