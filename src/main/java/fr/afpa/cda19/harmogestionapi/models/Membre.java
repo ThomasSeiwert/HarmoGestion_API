@@ -50,7 +50,7 @@ public class Membre {
     private String prenomMembre;
 
     /**
-     * Prénom du membre.
+     * Date d'inscription du membre.
      */
     @Column(name = "date_inscription_membre", nullable = false)
     @NotNull(message = "Un membre doit avoir une date d'inscription.")
