@@ -13,7 +13,6 @@ import jakarta.persistence.Table;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -49,21 +48,21 @@ public class Cours {
     @Max(value = 120, message = "Le cours doit durer au maximum 120 minutes")
     private byte dureeCours;
 
-//    @OneToMany
-//    @JoinColumn(name = "id_membre_enseignant")
-//    @Valid
-//    private Membre enseignant;
-//
-//    @OneToMany
-//    @JoinColumn(name = "id_instrument")
-//    @Valid
-//    private Instrument instrument;
-//
-//    @ManyToMany
-//    @JoinTable(
-//            name = "Participer_Cours",
-//            joinColumns = @JoinColumn(name = "id_membre_apprenant"),
-//            inverseJoinColumns = @JoinColumn(name = "id_cours")
-//    )
-//    private ArrayList<Membre> participants;
+    @OneToMany
+    @JoinColumn(name = "id_membre_enseignant")
+    @Valid
+    private Membre enseignant;
+
+    @OneToMany
+    @JoinColumn(name = "id_instrument")
+    @Valid
+    private Instrument instrument;
+
+    @ManyToMany
+    @JoinTable(
+            name = "Participer_Cours",
+            joinColumns = @JoinColumn(name = "id_membre_apprenant"),
+            inverseJoinColumns = @JoinColumn(name = "id_cours")
+    )
+    private ArrayList<Membre> participants;
 }
