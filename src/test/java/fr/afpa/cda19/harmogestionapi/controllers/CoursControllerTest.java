@@ -1,6 +1,5 @@
-package fr.afpa.cda19.harmogestionapi.controller;
+package fr.afpa.cda19.harmogestionapi.controllers;
 
-import fr.afpa.cda19.harmogestionapi.controllers.CoursController;
 import fr.afpa.cda19.harmogestionapi.models.Cours;
 import fr.afpa.cda19.harmogestionapi.services.CoursService;
 import org.junit.jupiter.api.Test;
