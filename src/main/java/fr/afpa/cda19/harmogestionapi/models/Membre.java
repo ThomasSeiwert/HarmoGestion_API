@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -52,7 +53,7 @@ public class Membre {
     @NotBlank(message = "Un membre doit avoir un prénom.")
     @Size(min = 3, max = 30,
           message = "Le prénom du membre doit faire entre trois "
-                    + "et cinquante caractères de long")
+                    + "et trente caractères de long.")
     private String prenomMembre;
 
     /**
@@ -60,5 +61,6 @@ public class Membre {
      */
     @Column(name = "date_inscription_membre", nullable = false)
     @NotNull(message = "Un membre doit avoir une date d'inscription.")
+    @PastOrPresent(message = "Une date d'inscription ne peut pas être future.")
     private LocalDate dateInscriptionMembre;
 }
