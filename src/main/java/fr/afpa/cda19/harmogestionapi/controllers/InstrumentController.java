@@ -110,10 +110,24 @@ public class InstrumentController {
      * ou message d'erreur avec un code 404
      */
     @GetMapping("/instrument/{id}")
-    public Optional<Instrument> getInstrument(
+    public ResponseEntity<Instrument> getInstrument(
             @PathVariable
             final int id) {
-        return service.getInstrument(id);
+        Optional<Instrument> instrument = service.getInstrument(id);
+        if (instrument.isEmpty()) {
+            // Aucun instrument n'a l'identifiant donné dans l'URL.
+            /*
+            Instance d'instrument utilisée pour envoyer les messages d'erreur
+            accompagnée du code retour BAD_REQUEST, NOT_FOUND,
+            ou INTERNAL_SERVER_ERROR
+            */
+            Instrument errorResult = new Instrument();
+            errorResult.setLibelleInstrument("La ressource n'est pas "
+                                             + "disponible.");
+            return new ResponseEntity<>(errorResult,
+                                        HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(instrument.get(), HttpStatus.OK);
     }
 
     /**
