@@ -33,4 +33,9 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=ThomasSeiwert_HarmoGestion_API
-
+      - name: Charging artefact
+        uses: actions/upload-artifact@v7
+        with:
+          name: package
+          path: target/*.jar
+          retention-days: 1
