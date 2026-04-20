@@ -8,10 +8,23 @@ jobs:
   build:
     name: Build and analyze
     runs-on: ubuntu-latest
-    env:
-      HARMOGESTION_DB_USERNAME: ${{ secrets.DB_USERNAME }}
-      HARMOGESTION_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+    services:
+      mysql_server:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          MYSQL_DATABASE: ${{ secrets.DB_NAME }}
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
+      - name: wait_for_MySQL_to_be_ready
+        run: |
+          while ! mysqladmin ping -h"127.0.0.1" -P"3306" --silent; do
+            sleep 1
+          done
+      - name: Create DB from script
+        run: mysql -h 127.0.0.1 -u root -p${{ secrets.DB_PASSWORD }} ${{ secrets.DB_NAME }} < scripts/ScriptCreationBDD.sql
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
@@ -35,6 +48,8 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          HARMOGESTION_DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          HARMOGESTION_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=ThomasSeiwert_HarmoGestion_API
       - name: Charging artefact
         uses: actions/upload-artifact@v7
