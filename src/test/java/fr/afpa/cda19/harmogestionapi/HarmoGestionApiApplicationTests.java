@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class HarmoGestionApiApplicationTests {
 
-    @Disabled
 	@Test
 	void contextLoads() {
 	}
