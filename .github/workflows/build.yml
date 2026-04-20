@@ -9,7 +9,7 @@ jobs:
     name: Build and analyze
     runs-on: ubuntu-latest
     services:
-      mysql_server:
+      mysql:
         image: mysql:latest
         env:
           MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
