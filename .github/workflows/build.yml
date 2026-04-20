@@ -9,7 +9,8 @@ jobs:
     name: Build and analyze
     runs-on: ubuntu-latest
     env:
-      SPRING_DATASOURCE_DRIVER: ${{ secrets.DB_DRIVER }}
+      HARMOGESTION_DB_USERNAME: ${{ secrets.DB_USERNAME }}
+      HARMOGESTION_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
     steps:
       - uses: actions/checkout@v6
         with:
