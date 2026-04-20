@@ -8,6 +8,11 @@ jobs:
   build:
     name: Build and analyze
     runs-on: ubuntu-latest
+    env:
+      HARMOGESTION_DB_USERNAME: ${{ secrets.DB_USERNAME }}
+      HARMOGESTION_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      HARMOGESTION_DB_HOST: ${{ secrets.DB_HOST }}
+      HARMOGESTION_DB_PORT: ${{ secrets.DB_PORT }}
     services:
       mysql:
         image: mysql:latest
@@ -48,10 +53,6 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          HARMOGESTION_DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          HARMOGESTION_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          HARMOGESTION_DB_HOST: ${{ secrets.DB_HOST }}
-          HARMOGESTION_DB_PORT: ${{ secrets.DB_PORT }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=ThomasSeiwert_HarmoGestion_API
       - name: Charging artefact
         uses: actions/upload-artifact@v7
