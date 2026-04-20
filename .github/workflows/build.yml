@@ -8,6 +8,8 @@ jobs:
   build:
     name: Build and analyze
     runs-on: ubuntu-latest
+    env:
+      SPRING_DATASOURCE_DRIVER: ${{ secrets.DB_DRIVER }}
     steps:
       - uses: actions/checkout@v6
         with:
