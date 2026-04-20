@@ -120,7 +120,7 @@ VALUES ('Hendrix', 'Jimmi', '2026-04-12'),
 -- Données de la table `Cours`
 --
 INSERT INTO Cours (date_cours, duree_cours, id_instrument, id_membre_enseignant)
-VALUES ('2026-04-22', 45, 1, 1);
+VALUES ('2026-04-22 15:00:00', 45, 1, 1);
 
 --
 -- Données de la table `Participer_Cours`
