@@ -15,7 +15,7 @@ jobs:
       HARMOGESTION_DB_PORT: ${{ secrets.DB_PORT }}
     services:
       mysql:
-        image: mysql:latest
+        image: mysql:8.4.7
         env:
           MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
           MYSQL_DATABASE: ${{ secrets.DB_NAME }}
