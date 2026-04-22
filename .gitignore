@@ -4,6 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 .allure
+allure-results/*.json
 
 ### Log, target and Javadoc ###
 *.log

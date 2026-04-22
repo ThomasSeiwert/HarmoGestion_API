@@ -74,8 +74,7 @@ class CoursControllerTest {
     @Severity(SeverityLevel.CRITICAL)
     void createCoursTestOk() throws Exception {
 
-        cours.getParticipants().add(new Membre(1, "Seiwert",
-                                               "Thomas", LocalDate.now()));
+
         final String json = new ObjectMapper().writeValueAsString(cours);
 
         mockMvc.perform(post("/cours")
