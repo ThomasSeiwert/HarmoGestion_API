@@ -63,7 +63,7 @@ jobs:
         with:
           github_token: ${{ secrets.ALLURE_REPORT_TOKEN }}
           publish_dir: target/site/allure-maven
-          destination_dir: allure-report
+          destination_dir: allure-results
           keep_files: false
       - name: Charging artefact
         uses: actions/upload-artifact@v7
