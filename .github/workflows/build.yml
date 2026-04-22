@@ -13,14 +13,15 @@ jobs:
       HARMOGESTION_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       HARMOGESTION_DB_HOST: ${{ secrets.DB_HOST }}
       HARMOGESTION_DB_PORT: ${{ secrets.DB_PORT }}
+      HARMOGESTION_API_PORT: ${{ secrets.API_PORT }}
     services:
       mysql:
-        image: mysql:8.4.7
+        image: mysql:latest
         env:
           MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
           MYSQL_DATABASE: ${{ secrets.DB_NAME }}
         ports:
-          - 3306:3306
+          - ${{ secrets.DB_PORT }}:${{ secrets.DB_PORT }}
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - uses: actions/checkout@v6
