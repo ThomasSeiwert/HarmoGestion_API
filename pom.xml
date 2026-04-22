@@ -138,7 +138,7 @@
             <goals>
               <goal>report</goal>
             </goals>
-            <phase>post-integration-test</phase>
+            <phase>verify</phase>
           </execution>
         </executions>
       </plugin>
