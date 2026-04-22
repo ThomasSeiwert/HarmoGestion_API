@@ -1,5 +1,8 @@
 package fr.afpa.cda19.harmogestionapi.controllers;
 
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import jdk.jfr.Description;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,6 +29,8 @@ class CoursControllerIntegrationTest {
     private MockMvc mockMvc;
 
     @Test
+    @Description("Test d'intégration du controller pour récupérer tous les cours")
+    @Severity(SeverityLevel.CRITICAL)
     void getAllCoursTest() throws Exception {
 
         mockMvc.perform(get("/cours"))

@@ -4,6 +4,9 @@ import fr.afpa.cda19.harmogestionapi.models.Cours;
 import fr.afpa.cda19.harmogestionapi.models.Instrument;
 import fr.afpa.cda19.harmogestionapi.models.Membre;
 import fr.afpa.cda19.harmogestionapi.services.CoursService;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import jdk.jfr.Description;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -48,22 +51,29 @@ class CoursControllerTest {
 
 
     @Test
+    @Description("Test unitaire du controller pour vérifier le statut de"
+                 + " la requête de récupération de la liste des cours")
+    @Severity(SeverityLevel.CRITICAL)
     void getAllCoursTest() throws Exception {
 
         mockMvc.perform(get("/cours")).andExpect(status().isOk());
     }
 
     @Test
+    @Description("Test unitaire du controller pour vérifier le statut de"
+                 + " la requête de récupération d'un cours")
+    @Severity(SeverityLevel.CRITICAL)
     void getCoursTest() throws Exception {
 
         mockMvc.perform(get("/cours/1")).andExpect(status().isOk());
     }
 
     @Test
+    @Description("Test unitaire du controller pour vérifier le statut de"
+                 + " la requête de création d'un cours valide")
+    @Severity(SeverityLevel.CRITICAL)
     void createCoursTestOk() throws Exception {
 
-        cours.getParticipants().add(new Membre(2, "Hendrix",
-                                               "Jimmi", LocalDate.now()));
         final String json = new ObjectMapper().writeValueAsString(cours);
 
         mockMvc.perform(post("/cours")
@@ -73,6 +83,9 @@ class CoursControllerTest {
     }
 
     @Test
+    @Description("Test unitaire du controller pour vérifier le statut de"
+                 + " la requête de création d'un cours non valide")
+    @Severity(SeverityLevel.CRITICAL)
     void createCoursTestKo() throws Exception {
 
         cours.setIdCours(1);
@@ -85,6 +98,9 @@ class CoursControllerTest {
     }
 
     @Test
+    @Description("Test unitaire du controller pour vérifier le statut de"
+                 + " la requête de modification d'un cours")
+    @Severity(SeverityLevel.MINOR)
     void updateCoursTest() throws Exception {
 
         final String json = new ObjectMapper().writeValueAsString(cours);
@@ -96,6 +112,9 @@ class CoursControllerTest {
     }
 
     @Test
+    @Description("Test unitaire du controller pour vérifier le statut de"
+                 + " la requête de suppression d'un cours")
+    @Severity(SeverityLevel.CRITICAL)
     void deleteCoursTest() throws Exception {
 
         final String json = new ObjectMapper().writeValueAsString(cours);
