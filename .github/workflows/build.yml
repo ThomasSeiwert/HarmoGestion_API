@@ -57,6 +57,14 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=ThomasSeiwert_HarmoGestion_API
+      - name: Generate Allure Report
+        if: always()
+        uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e
+        with:
+          github_token: ${{ secrets.ALLURE_REPORT_TOKEN }}
+          publish_dir: target/site/allure-maven-plugin
+          destination_dir: allure-report
+          keep_files: false
       - name: Charging artefact
         uses: actions/upload-artifact@v7
         with:
