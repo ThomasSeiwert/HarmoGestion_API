@@ -5,6 +5,6 @@ WORKDIR /app
 
 EXPOSE 9004
 
-COPY package.jar /app/harmoGestionAPI.jar
+COPY harmoGestionAPI-0.0.1-SNAPSHOT.jar /app/harmoGestionAPI.jar
 
 ENTRYPOINT ["java", "-jar", "/app/harmoGestionAPI.jar"]

@@ -80,7 +80,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v8
         with:
-          name: package.jar
+          name: package
       - name: Build and push image
         uses: docker/build-push-action@v7
         with:
