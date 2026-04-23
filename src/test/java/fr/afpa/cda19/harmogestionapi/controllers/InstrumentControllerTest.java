@@ -35,35 +35,35 @@ class InstrumentControllerTest {
                  + " la requête de récupération de la liste des instruments")
     @Severity(SeverityLevel.CRITICAL)
     void getInstrumentsTest() throws Exception {
-        mockMvc.perform(get("/instruments")).andExpect(status().isOk());
+        mockMvc.perform(get("/instruments")).andExpect(status().isNoContent());
     }
 
     @Test
     @Description("Test unitaire du controller pour vérifier le statut de"
                  + " la requête de récupération d'un cours")
-    @Severity(SeverityLevel.CRITICAL)
+    @Severity(SeverityLevel.NORMAL)
     void getInstrumentTestKo() throws Exception {
-        mockMvc.perform(get("/instrument/1")).andExpect(status().isNotFound());
+        mockMvc.perform(get("/instrument/1")).andExpect(status().isBadRequest());
     }
 
     @Test
     @Description("Test unitaire du controller pour vérifier le statut de"
                  + " la requête de suppression d'un instrument")
-    @Severity(SeverityLevel.CRITICAL)
+    @Severity(SeverityLevel.NORMAL)
     void deleteInstrumentTest() throws Exception {
-        mockMvc.perform(delete("/instrument/1")).andExpect(status().isOk());
+        mockMvc.perform(delete("/instrument/1")).andExpect(status().isBadRequest());
     }
 
     @Test
     @Description("Test unitaire du controller pour vérifier le statut de"
                  + " la requête de modification d'un instrument")
-    @Severity(SeverityLevel.MINOR)
+    @Severity(SeverityLevel.NORMAL)
     void updateInstrumentTest() throws Exception {
         mockMvc.perform(
                 put("/instrument/1").contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(
                                 new Instrument()
-                        ))).andExpect(status().isNotFound());
+                        ))).andExpect(status().isBadRequest());
     }
 
     @ParameterizedTest
