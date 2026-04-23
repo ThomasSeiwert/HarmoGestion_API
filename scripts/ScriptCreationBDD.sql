@@ -54,15 +54,25 @@ CREATE TABLE `representation`(
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Structure de la table `Pratiquer`
+-- Structure de la table `Instrument_Maitrise`
 --
-CREATE TABLE `pratiquer`(
-   `id_membre` INT,
-   `id_instrument` INT,
-   `apprentissage_en_cours` BOOLEAN NOT NULL,
-   PRIMARY KEY(`id_membre`, `id_instrument`),
-   FOREIGN KEY(`id_membre`) REFERENCES `membre`(`id_membre`),
-   FOREIGN KEY(`id_instrument`) REFERENCES `instrument`(`id_instrument`)
+CREATE TABLE instrument_maitrise(
+    id_membre INT,
+    id_instrument INT,
+    PRIMARY KEY(id_membre, id_instrument),
+    FOREIGN KEY(id_membre) REFERENCES membre(id_membre),
+    FOREIGN KEY(id_instrument) REFERENCES instrument(id_instrument)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Structure de la table `Instrument_Appris`
+--
+CREATE TABLE instrument_appris(
+    id_membre INT,
+    id_instrument INT,
+    PRIMARY KEY(id_membre, id_instrument),
+    FOREIGN KEY(id_membre) REFERENCES membre(id_membre),
+    FOREIGN KEY(id_instrument) REFERENCES instrument(id_instrument)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
