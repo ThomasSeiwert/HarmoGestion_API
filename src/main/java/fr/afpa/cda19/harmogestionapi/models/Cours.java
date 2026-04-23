@@ -105,6 +105,7 @@ public class Cours {
      * @return cours cloné.
      */
     public static Cours clone(final CoursDTO coursDTO) {
+
         Cours coursClone = new Cours();
         coursClone.setIdCours(coursDTO.getIdCours());
         coursClone.setDateCours(coursDTO.getDateCours());

@@ -122,8 +122,8 @@ public class CoursController {
     @PutMapping("/cours/{id}")
     public ResponseEntity<Cours> updateCours(
             @PathVariable final int id,
-            @Valid
-            @RequestBody final CoursDTO cours, final BindingResult result) {
+            @RequestBody
+            @Valid final CoursDTO cours, final BindingResult result) {
 
         Optional<Cours> optionalCours = coursService.getCours(id);
         if (optionalCours.isEmpty()) {
