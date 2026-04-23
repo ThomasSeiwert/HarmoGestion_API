@@ -10,6 +10,8 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -46,14 +48,15 @@ public class Cours {
     /**
      * Date du cours.
      */
-    @Column(name = "date_cours", nullable = false)
+    @Column(name = "date_cours")
     @NotNull(message = "Le cours doit avoir une date")
+    @FutureOrPresent(message = "Le cours doit être à une date future")
     private LocalDateTime dateCours;
 
     /**
      * Durée du cours (en min).
      */
-    @Column(name = "duree_cours", nullable = false)
+    @Column(name = "duree_cours")
     @Min(value = 30, message = "Le cours doit durer au moins 30 minutes")
     @Max(value = 120, message = "Le cours doit durer au maximum 120 minutes")
     private byte dureeCours;
@@ -62,16 +65,18 @@ public class Cours {
      * Enseignant.
      */
     @ManyToOne
-    @JoinColumn(name = "id_membre_enseignant", nullable = false)
-    @NotNull
+    @JoinColumn(name = "id_membre_enseignant")
+    @NotNull(message = "Le cours doit avoir un enseignant")
+    @Valid
     private Membre enseignant;
 
     /**
      * Instrument enseigné.
      */
     @ManyToOne
-    @JoinColumn(name = "id_instrument", nullable = false)
-    @NotNull
+    @JoinColumn(name = "id_instrument")
+    @NotNull(message = "Le cours doit concerner un instrument")
+    @Valid
     private Instrument instrument;
 
     /**
@@ -86,5 +91,5 @@ public class Cours {
     @NotNull(message = "Le cours doit avoir des participants")
     @Size(min = 1, max = 15, message = "Le nombre de participants doit être "
                                        + "entre 1 et 15")
-    private List<Membre> participants;
+    private List<@Valid Membre> participants;
 }

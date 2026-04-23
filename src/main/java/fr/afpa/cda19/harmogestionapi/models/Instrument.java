@@ -37,8 +37,7 @@ public class Instrument {
     /**
      * Nom de l'instrument.
      */
-    @Column(name = "libelle_instrument", unique = true, length = 50,
-            nullable = false)
+    @Column(name = "libelle_instrument")
     @NotBlank(message = "Un instrument doit avoir un nom")
     @Size(min = 3, max = 50,
           message = "Le nom de l'instrument doit faire entre trois "
