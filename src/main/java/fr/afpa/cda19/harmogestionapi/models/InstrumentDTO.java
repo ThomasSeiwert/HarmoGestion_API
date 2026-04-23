@@ -17,6 +17,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class InstrumentDTO {
 
+    //--------------------------------------------------------------------------
+    // Attributs
+    //--------------------------------------------------------------------------
+
     /**
      * Identifiant de l'instrument.
      */

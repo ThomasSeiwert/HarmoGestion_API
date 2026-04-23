@@ -30,10 +30,18 @@ import java.util.Optional;
 @RestController
 public class InstrumentController {
 
+    //--------------------------------------------------------------------------
+    // Attributs
+    //--------------------------------------------------------------------------
+
     /**
      * Service de liaison avec le repository des instruments.
      */
     private final InstrumentService instrumentService;
+
+    //--------------------------------------------------------------------------
+    // Constructeurs
+    //--------------------------------------------------------------------------
 
     /**
      * Constructeur d'initialisation du contrôleur.
@@ -45,6 +53,10 @@ public class InstrumentController {
 
         this.instrumentService = instrumentService;
     }
+
+    //--------------------------------------------------------------------------
+    // Méthodes
+    //--------------------------------------------------------------------------
 
     /**
      * Endpoint de récupèration de la liste des instruments.
@@ -146,7 +158,7 @@ public class InstrumentController {
             Instrument persistantInstrument = Instrument.clone(instrument);
             try {
                 Instrument savedInstrument =
-                        instrumentService.createInstrument(persistantInstrument);
+                        instrumentService.updateInstrument(persistantInstrument);
                 return new ResponseEntity<>(savedInstrument, HttpStatus.CREATED);
             } catch (DataIntegrityViolationException _) {
                 // le libellé doit être unique

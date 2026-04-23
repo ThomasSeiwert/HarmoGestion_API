@@ -33,6 +33,11 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "membre")
 public class Membre {
+
+    //--------------------------------------------------------------------------
+    // Attributs
+    //--------------------------------------------------------------------------
+
     /**
      * Identifiant du membre.
      */

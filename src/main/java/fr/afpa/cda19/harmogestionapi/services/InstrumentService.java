@@ -18,16 +18,28 @@ import java.util.Optional;
 @Service
 public class InstrumentService {
 
+    //--------------------------------------------------------------------------
+    // Attributs
+    //--------------------------------------------------------------------------
+
     /**
      * Repository des instruments
      */
     private final InstrumentRepository instrumentRepository;
+
+    //--------------------------------------------------------------------------
+    // Constructeurs
+    //--------------------------------------------------------------------------
 
     @Autowired
     public InstrumentService(final InstrumentRepository instrumentRepository) {
 
         this.instrumentRepository = instrumentRepository;
     }
+
+    //--------------------------------------------------------------------------
+    // Méthodes
+    //--------------------------------------------------------------------------
 
     /**
      * Récupèration de la liste des instruments.

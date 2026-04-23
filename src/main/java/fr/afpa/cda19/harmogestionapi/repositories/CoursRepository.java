@@ -11,6 +11,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CoursRepository extends CrudRepository<Cours, Integer> {
 
+    //--------------------------------------------------------------------------
+    // Méthodes
+    //--------------------------------------------------------------------------
+
     /**
      * Retourne les prochains cours dans la BDD.
      *

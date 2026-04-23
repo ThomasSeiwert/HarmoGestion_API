@@ -29,11 +29,18 @@ import java.util.Optional;
 @RestController
 public class CoursController {
 
+    //--------------------------------------------------------------------------
+    // Attributs
+    //--------------------------------------------------------------------------
+
     /**
      * Instance du service pour les cours.
      */
     private final CoursService coursService;
 
+    //--------------------------------------------------------------------------
+    // Constructeurs
+    //--------------------------------------------------------------------------
 
     /**
      * Constructeur du controller des cours.
@@ -46,6 +53,9 @@ public class CoursController {
         this.coursService = coursService;
     }
 
+    //--------------------------------------------------------------------------
+    // Méthodes
+    //--------------------------------------------------------------------------
 
     /**
      * Pour une requête GET et une URL "/cours", retourne la liste des prochains cours.

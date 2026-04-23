@@ -20,11 +20,18 @@ import java.util.Optional;
 @Service
 public class CoursService {
 
+    //--------------------------------------------------------------------------
+    // Attributs
+    //--------------------------------------------------------------------------
+
     /**
      * Instance de la repository des cours.
      */
     private CoursRepository coursRepository;
 
+    //--------------------------------------------------------------------------
+    // Constructeurs
+    //--------------------------------------------------------------------------
 
     /**
      * Constructeur du service des cours.
@@ -37,6 +44,9 @@ public class CoursService {
         this.coursRepository = coursRepository;
     }
 
+    //--------------------------------------------------------------------------
+    // Méthodes
+    //--------------------------------------------------------------------------
 
     /**
      * Service pour chercher tous les prochains cours.
