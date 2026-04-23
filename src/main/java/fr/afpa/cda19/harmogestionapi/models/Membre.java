@@ -99,4 +99,28 @@ public class Membre {
     @Size(max = 10, message = "Un membre peut apprendre au maximum"
                               + " 10 instruments")
     private List<@Valid Instrument> instrumentsAppris;
+
+    //--------------------------------------------------------------------------
+    // Méthodes
+    //--------------------------------------------------------------------------
+
+    /**
+     * Méthode pour cloner un membre DTO en membre persistant.
+     *
+     * @param membreDTO membre à cloner.
+     *
+     * @return membre cloné.
+     */
+    public static Membre clone(final MembreDTO membreDTO) {
+
+        Membre membreClone = new Membre();
+        membreClone.setIdMembre(membreDTO.getIdMembre());
+        membreClone.setNomMembre(membreDTO.getNomMembre());
+        membreClone.setPrenomMembre(membreDTO.getPrenomMembre());
+        membreClone.setDateInscriptionMembre(membreDTO.getDateInscriptionMembre());
+        membreClone.setInstrumentsMaitrises(membreDTO.getInstrumentsMaitrises());
+        membreClone.setInstrumentsAppris(membreDTO.getInstrumentsAppris());
+
+        return membreClone;
+    }
 }

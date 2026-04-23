@@ -10,6 +10,5 @@ import org.springframework.data.repository.CrudRepository;
  * @version 1.0.0
  * @since 09/04/2026
  */
-public interface MembreRepository
-        extends CrudRepository<Membre, Integer> {
+public interface MembreRepository extends CrudRepository<Membre, Integer> {
 }

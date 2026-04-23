@@ -1,66 +1,110 @@
 package fr.afpa.cda19.harmogestionapi.services;
 
+import fr.afpa.cda19.harmogestionapi.exceptions.ModelException;
 import fr.afpa.cda19.harmogestionapi.repositories.MembreRepository;
 import fr.afpa.cda19.harmogestionapi.models.Membre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 
 /**
- * Service de liaison entre les contrôleurs et le repository
- * {@link MembreRepository}.
+ * Service de liaison entre les contrôleurs et le repository.
+ *
  * @author Rodolphe BRUCKER
  * @version 1.0.0
  * @since 09/04/2026
  */
 @Service
 public class MembreService {
-    //==== Variables ====
+
+    //--------------------------------------------------------------------------
+    // Attributs
+    //--------------------------------------------------------------------------
+
     /**
-     * Service de liaison avec le repository des instruments.
+     * Service de liaison avec le repository des membres.
      */
-    private final MembreRepository repository;
+    private final MembreRepository membreRepository;
+
+    //--------------------------------------------------------------------------
+    // Constructeurs
+    //--------------------------------------------------------------------------
 
     /**
      * Constructeur.
-     * @param repository Repository des membres.
+     *
+     * @param membreRepository Repository des membres
      */
     @Autowired
-    public MembreService(MembreRepository repository) {
-        this.repository = repository;
+    public MembreService(MembreRepository membreRepository) {
+
+        this.membreRepository = membreRepository;
+    }
+
+    //--------------------------------------------------------------------------
+    // Méthodes
+    //--------------------------------------------------------------------------
+
+    /**
+     * Récupèration de la liste des membres.
+     *
+     * @return Liste des membres
+     */
+    public Iterable<Membre> getMembres() {
+
+        return membreRepository.findAll();
     }
 
     /**
      * Récupèration d'un membre par son identifiant.
+     *
      * @param id l'identifiant du membre recherché
-     * @return ({@link Optional}) Éventuel membre correspondant à l'identifiant.
+     *
+     * @return éventuel membre correspondant à l'identifiant
      */
-    public Optional<Membre> getMembre(int id) {
-        return repository.findById(id);
+    public Optional<Membre> getMembre(final int id) {
+
+        return membreRepository.findById(id);
     }
 
     /**
-     * Récupèration de la liste des membres.
-     * @return Liste des membres.
+     * Enregistrement d'un nouveau membre.
+     *
+     * @param membre Membre à créer
+     *
+     * @return Membre après création
      */
-    public Iterable<Membre> getMembres() {
-        return repository.findAll();
+    public Membre createMembre(final Membre membre) {
+
+        if (membre.getIdMembre() != null) {
+            throw new ModelException("L'identifiant doit être nul");
+        }
+        return membreRepository.save(membre);
+    }
+
+    /**
+     * Modification d'un membre.
+     *
+     * @param membre Membre à modifier
+     *
+     * @return Membre après modification
+     */
+    public Membre updateMembre(final Membre membre) {
+
+        if (membre.getIdMembre() == null) {
+            throw new ModelException("L'identifiant doit être non nul");
+        }
+        return membreRepository.save(membre);
     }
 
     /**
      * Suppression d'un membre par son identifiant.
-     * @param id Identifiant du membre à supprimer.
+     *
+     * @param id Identifiant du membre à supprimer
      */
-    public void deleteMembre(int id) {
-        repository.deleteById(id);
-    }
+    public void deleteMembre(final int id) {
 
-    /**
-     * Enregistrement ou modification d'un membre.
-     * @param membre Membre à créer ou modifier.
-     * @return Membre après création ou modification.
-     */
-    public Membre saveMembre(Membre membre) {
-        return repository.save(membre);
+        membreRepository.deleteById(id);
     }
 }
