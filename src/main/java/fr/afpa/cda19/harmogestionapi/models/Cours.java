@@ -92,4 +92,27 @@ public class Cours {
     @Size(min = 1, max = 15, message = "Le nombre de participants doit être "
                                        + "entre 1 et 15")
     private List<@Valid Membre> participants;
+
+    //--------------------------------------------------------------------------
+    // Méthodes
+    //--------------------------------------------------------------------------
+
+    /**
+     * Méthode pour cloner un cours DTO en cours persistant.
+     *
+     * @param coursDTO cours à cloner.
+     *
+     * @return cours cloné.
+     */
+    public static Cours clone(final CoursDTO coursDTO) {
+        Cours coursClone = new Cours();
+        coursClone.setIdCours(coursDTO.getIdCours());
+        coursClone.setDateCours(coursDTO.getDateCours());
+        coursClone.setDureeCours(coursDTO.getDureeCours());
+        coursClone.setEnseignant(coursDTO.getEnseignant());
+        coursClone.setInstrument(coursDTO.getInstrument());
+        coursClone.setParticipants(coursDTO.getParticipants());
+
+        return coursClone;
+    }
 }
