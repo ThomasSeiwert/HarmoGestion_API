@@ -29,9 +29,9 @@ class CoursControllerIntegrationTest {
     private MockMvc mockMvc;
 
     @Test
-    @Description("Test d'intégration du controller pour récupérer tous les cours")
+    @Description("Test d'intégration du controller pour récupérer les prochains cours")
     @Severity(SeverityLevel.CRITICAL)
-    void getAllCoursTest() throws Exception {
+    void getProchainsCoursTest() throws Exception {
 
         mockMvc.perform(get("/cours"))
                 .andExpect(status().isOk())

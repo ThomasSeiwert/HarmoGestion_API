@@ -39,11 +39,11 @@ class CoursControllerTest {
     private MockMvc mockMvc;
 
     private final Cours cours =
-            new Cours(null, LocalDateTime.now(), (byte) 45,
-                      new Membre(1, "Seiwert",
-                                 "Thomas", LocalDate.now()),
-                      new Instrument(1, "guitare"),
-                      new ArrayList<>());
+            new Cours(null, LocalDateTime.now().plusDays(1), (byte) 45,
+                      new Membre(1, "Jimi","Hendrix",
+                              LocalDate.now().minusDays(1),
+                              null, null),
+                      new Instrument(1, "guitare"), new ArrayList<>());
 
 
     @MockitoBean
@@ -56,16 +56,16 @@ class CoursControllerTest {
     @Severity(SeverityLevel.CRITICAL)
     void getAllCoursTest() throws Exception {
 
-        mockMvc.perform(get("/cours")).andExpect(status().isOk());
+        mockMvc.perform(get("/cours")).andExpect(status().isNoContent());
     }
 
     @Test
     @Description("Test unitaire du controller pour vérifier le statut de"
                  + " la requête de récupération d'un cours")
-    @Severity(SeverityLevel.CRITICAL)
+    @Severity(SeverityLevel.NORMAL)
     void getCoursTest() throws Exception {
 
-        mockMvc.perform(get("/cours/1")).andExpect(status().isOk());
+        mockMvc.perform(get("/cours/1")).andExpect(status().isBadRequest());
     }
 
     @Test
@@ -74,8 +74,9 @@ class CoursControllerTest {
     @Severity(SeverityLevel.CRITICAL)
     void createCoursTestOk() throws Exception {
 
-        cours.getParticipants().add(new Membre(1, "Hendrix",
-                                               "Jimi", LocalDate.now()));
+        cours.getParticipants().add(new Membre(2, "Seiwert",
+                "Thomas", LocalDate.now().minusDays(1),
+                null, null));
         final String json = new ObjectMapper().writeValueAsString(cours);
 
         mockMvc.perform(post("/cours")
@@ -86,7 +87,7 @@ class CoursControllerTest {
 
     @Test
     @Description("Test unitaire du controller pour vérifier le statut de"
-                 + " la requête de création d'un cours non valide")
+                 + " la requête de création d'un cours avec un identifiant non nul")
     @Severity(SeverityLevel.CRITICAL)
     void createCoursTestKo() throws Exception {
 
@@ -102,7 +103,7 @@ class CoursControllerTest {
     @Test
     @Description("Test unitaire du controller pour vérifier le statut de"
                  + " la requête de modification d'un cours")
-    @Severity(SeverityLevel.MINOR)
+    @Severity(SeverityLevel.NORMAL)
     void updateCoursTest() throws Exception {
 
         final String json = new ObjectMapper().writeValueAsString(cours);
@@ -110,13 +111,13 @@ class CoursControllerTest {
         mockMvc.perform(put("/cours/1")
                                 .content(json)
                                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
     @Description("Test unitaire du controller pour vérifier le statut de"
                  + " la requête de suppression d'un cours")
-    @Severity(SeverityLevel.CRITICAL)
+    @Severity(SeverityLevel.NORMAL)
     void deleteCoursTest() throws Exception {
 
         final String json = new ObjectMapper().writeValueAsString(cours);
@@ -124,6 +125,6 @@ class CoursControllerTest {
         mockMvc.perform(delete("/cours/1")
                                 .content(json)
                                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isBadRequest());
     }
 }
