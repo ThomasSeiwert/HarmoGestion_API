@@ -1,5 +1,6 @@
-package fr.afpa.cda19.harmogestionapi.models;
+package fr.afpa.cda19.harmogestionapi.dto;
 
+import fr.afpa.cda19.harmogestionapi.models.Instrument;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

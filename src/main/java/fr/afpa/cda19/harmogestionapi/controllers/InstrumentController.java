@@ -1,7 +1,7 @@
 package fr.afpa.cda19.harmogestionapi.controllers;
 
 import fr.afpa.cda19.harmogestionapi.models.Instrument;
-import fr.afpa.cda19.harmogestionapi.models.InstrumentDTO;
+import fr.afpa.cda19.harmogestionapi.dto.InstrumentDTO;
 import fr.afpa.cda19.harmogestionapi.services.InstrumentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

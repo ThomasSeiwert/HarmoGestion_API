@@ -1,5 +1,6 @@
 package fr.afpa.cda19.harmogestionapi.models;
 
+import fr.afpa.cda19.harmogestionapi.dto.CoursDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
