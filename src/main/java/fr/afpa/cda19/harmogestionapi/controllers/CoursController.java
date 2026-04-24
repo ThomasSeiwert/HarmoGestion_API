@@ -1,14 +1,12 @@
 package fr.afpa.cda19.harmogestionapi.controllers;
 
 import fr.afpa.cda19.harmogestionapi.models.Cours;
-import fr.afpa.cda19.harmogestionapi.models.Membre;
+import fr.afpa.cda19.harmogestionapi.models.CoursDTO;
 import fr.afpa.cda19.harmogestionapi.services.CoursService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 /**
@@ -30,11 +29,18 @@ import java.util.Optional;
 @RestController
 public class CoursController {
 
+    //--------------------------------------------------------------------------
+    // Attributs
+    //--------------------------------------------------------------------------
+
     /**
      * Instance du service pour les cours.
      */
     private final CoursService coursService;
 
+    //--------------------------------------------------------------------------
+    // Constructeurs
+    //--------------------------------------------------------------------------
 
     /**
      * Constructeur du controller des cours.
@@ -47,32 +53,49 @@ public class CoursController {
         this.coursService = coursService;
     }
 
+    //--------------------------------------------------------------------------
+    // Méthodes
+    //--------------------------------------------------------------------------
 
     /**
-     * Pour une requête GET et une URL "/cours", retourne la liste des cours.
+     * Pour une requête GET et une URL "/cours", retourne la liste des prochains cours.
      *
-     * @return Iterable{Cours} : liste des cours
+     * @return la liste des prochains cours et statut 200,
+     * ou statut 204 si aucun cours trouvé
      */
     @GetMapping("/cours")
-    public Iterable<Cours> getAllCours() {
+    public ResponseEntity<Iterable<Cours>> getProchainsCours() {
 
-        return coursService.getAllCours();
+        ArrayList<Cours> listeCours =
+                (ArrayList<Cours>) coursService.getProchainsCours();
+
+        if (listeCours.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(listeCours, HttpStatus.OK);
+        }
     }
 
     /**
-     * Pour une requête GET et une URL "/cours/{id},
+     * Pour une requête GET et une URL "/cours/'id',
      * retourne le cours correspondant à l'identifiant demandé.
      *
-     * @param id int : identifiant du cours demandé.
-     * @return Cours : le cours correspondant à l'id (null si inexistant)
+     * @param id int : identifiant du cours demandé
+     *
+     * @return le cours correspondant à l'id et statut 200,
+     * ou statut 400 si aucun cours ne correspondant à l'identifiant
      */
     @GetMapping("/cours/{id}")
-    public Cours getCours(
-            @PathVariable
-            final int id) {
+    public ResponseEntity<Cours> getCours(
+            @PathVariable final int id) {
 
         Optional<Cours> cours = coursService.getCours(id);
-        return cours.orElse(null);
+
+        if (cours.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(cours.get(), HttpStatus.OK);
+        }
     }
 
     /**
@@ -80,99 +103,71 @@ public class CoursController {
      *
      * @param cours  Cours : cours à créer
      * @param result BindingResult : erreurs de validation par rapport au model
-     * @return Réponse avec le cours créé et un statut 201,
-     * ou un statut 400 ou 500 pour une erreur.
+     *
+     * @return le cours créé et un statut 201, ou 400 pour un cours non valide
      */
     @PostMapping("/cours")
-    public ResponseEntity<Object> createCours(
+    public ResponseEntity<Cours> createCours(
             @RequestBody
-            @Valid
-            final Cours cours, final BindingResult result) {
+            @Valid final CoursDTO cours, final BindingResult result) {
 
-        if (cours.getIdCours() != null || result.hasErrors() ||
-            cours.getEnseignant().getIdMembre() == null ||
-            cours.getInstrument().getIdInstrument() == null) {
+        if (result.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-            for (Membre participant : cours.getParticipants()) {
-                if (participant.getIdMembre() == null) {
-                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-                }
-            }
-            try {
-                Cours savedCours = coursService.saveCours(cours);
-                return new ResponseEntity<>(savedCours, HttpStatus.CREATED);
-            } catch (DataIntegrityViolationException _) {
-                return new ResponseEntity<>("L'enseignant, l'instrument, "
-                                            + "ou l'un des participants "
-                                            + "n'existe pas.",
-                                            HttpStatus.NOT_FOUND);
-            } catch (Exception _) {
-                return new ResponseEntity<>("Erreur inconnue.",
-                                            HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+            Cours persistantCours = Cours.clone(cours);
+            Cours savedCours = coursService.createCours(persistantCours);
+            return new ResponseEntity<>(savedCours, HttpStatus.CREATED);
         }
     }
 
     /**
-     * Pour une requête PUT et une URL "/cours/{id}", modifie le cours demandé.
+     * Pour une requête PUT et une URL "/cours/'id'", modifie le cours demandé.
      *
      * @param id     int : identifiant du cours à modifier
      * @param cours  Cours : cours à modifier
      * @param result BindingResult : erreurs de validation par rapport au model
-     * @return Réponse avec le cours modifié avec un statut 200,
-     * ou un statut 400 ou 500 pour une erreur.
+     *
+     * @return cours modifié avec un statut 200, ou 400 pour un cours non valide
      */
     @PutMapping("/cours/{id}")
-    public ResponseEntity<Object> updateCours(
-            @PathVariable
-            final int id,
-            @Valid
+    public ResponseEntity<Cours> updateCours(
+            @PathVariable final int id,
             @RequestBody
-            final Cours cours, final BindingResult result) {
+            @Valid final CoursDTO cours, final BindingResult result) {
 
-        Optional<Cours> optionalInstrument = coursService.getCours(id);
-        if (optionalInstrument.isEmpty()) {
-            // Aucun cours n'a l'identifiant donné dans l'URL.
-            return new ResponseEntity<>("La ressource n'est pas disponible.",
-                                        HttpStatus.NOT_FOUND);
-        }
-        if (cours.getIdCours() == null || result.hasErrors() ||
-            cours.getEnseignant().getIdMembre() == null ||
-            cours.getInstrument().getIdInstrument() == null) {
+        Optional<Cours> optionalCours = coursService.getCours(id);
+        if (optionalCours.isEmpty()) {
+            // le cours doit exister dans la BDD
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else if (result.hasErrors()) {
+            // le cours ne doit pas avoir d'erreurs
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-            for (Membre participant : cours.getParticipants()) {
-                if (participant.getIdMembre() == null) {
-                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-                }
-            }
-            try {
-                Cours savedCours = coursService.saveCours(cours);
-                return new ResponseEntity<>(savedCours, HttpStatus.OK);
-            } catch (ObjectRetrievalFailureException _) {
-                return new ResponseEntity<>("L'enseignant, l'instrument, "
-                                            + "ou l'un des participants "
-                                            + "n'existe pas.",
-                                            HttpStatus.NOT_FOUND);
-            } catch (Exception _) {
-                return new ResponseEntity<>("Erreur inconnue.",
-                                            HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+            Cours persistantCours = Cours.clone(cours);
+            Cours savedCours = coursService.updateCours(persistantCours);
+            return new ResponseEntity<>(savedCours, HttpStatus.OK);
         }
     }
 
     /**
-     * Pour une requête DELETE et une URL "/cours/{id}",
+     * Pour une requête DELETE et une URL "/cours/'id'",
      * supprime le cours demandé.
      *
-     * @param id int : identifiant du cours à supprimer.
+     * @param id int : identifiant du cours à supprimer
+     *
+     * @return statut 200, ou 400 si aucun cours ne corrspond à l'identifiant
      */
     @DeleteMapping("/cours/{id}")
-    public void deleteCours(
-            @PathVariable
-            final int id) {
+    public ResponseEntity<Cours> deleteCours(
+            @PathVariable final int id) {
 
-        coursService.deleteCours(id);
+        Optional<Cours> optionalCours = coursService.getCours(id);
+        if (optionalCours.isEmpty()) {
+            // le cours doit exister dans la BDD
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            coursService.deleteCours(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
     }
 }

@@ -10,7 +10,5 @@ import org.springframework.data.repository.CrudRepository;
  * @version 1.0.0
  * @since 07/04/2026
  */
-public interface InstrumentRepository
-        extends CrudRepository<Instrument, Integer> {
-
+public interface InstrumentRepository extends CrudRepository<Instrument, Integer> {
 }

@@ -759,3 +759,8 @@ ij_continuation_indent_size = 4
 end_of_line = lf
 ij_jsp_jsp_prefer_comma_separated_import_list = false
 ij_jsp_keep_indents_on_empty_lines = false
+
+[{*.yml,*.yaml,*.xml}]
+indent_size = 2
+tab_width = 2
+ij_continuation_indent_size = 4

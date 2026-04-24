@@ -1,5 +1,6 @@
 package fr.afpa.cda19.harmogestionapi.services;
 
+import fr.afpa.cda19.harmogestionapi.exceptions.ModelException;
 import fr.afpa.cda19.harmogestionapi.models.Cours;
 import fr.afpa.cda19.harmogestionapi.repositories.CoursRepository;
 import lombok.Data;
@@ -19,11 +20,18 @@ import java.util.Optional;
 @Service
 public class CoursService {
 
+    //--------------------------------------------------------------------------
+    // Attributs
+    //--------------------------------------------------------------------------
+
     /**
      * Instance de la repository des cours.
      */
     private CoursRepository coursRepository;
 
+    //--------------------------------------------------------------------------
+    // Constructeurs
+    //--------------------------------------------------------------------------
 
     /**
      * Constructeur du service des cours.
@@ -36,21 +44,25 @@ public class CoursService {
         this.coursRepository = coursRepository;
     }
 
+    //--------------------------------------------------------------------------
+    // Méthodes
+    //--------------------------------------------------------------------------
 
     /**
-     * Service pour chercher tous les cours.
+     * Service pour chercher tous les prochains cours.
      *
-     * @return Iterable{Cours} : la liste des cours
+     * @return Iterable{Cours} : la liste des prochains cours
      */
-    public Iterable<Cours> getAllCours() {
+    public Iterable<Cours> getProchainsCours() {
 
-        return coursRepository.findAll();
+        return coursRepository.findAllInFuture();
     }
 
     /**
      * Service pour chercher un cours selon son identifiant.
      *
      * @param id int : identifiant du cours cherché
+     *
      * @return Optional{Cours} : le cours correspondant à l'id (peut être null)
      */
     public Optional<Cours> getCours(final int id) {
@@ -59,13 +71,32 @@ public class CoursService {
     }
 
     /**
-     * Service pour créer ou modifier un cours.
+     * Service pour créer un cours.
      *
-     * @param cours Cours : cours à créer/modifier
-     * @return Cours : le cours créé/modifié
+     * @param cours Cours : cours à créer
+     *
+     * @return Cours : le cours créé
      */
-    public Cours saveCours(final Cours cours) {
+    public Cours createCours(final Cours cours) {
 
+        if (cours.getIdCours() != null) {
+            throw new ModelException("L'identifiant du cours doit être nul");
+        }
+        return coursRepository.save(cours);
+    }
+
+    /**
+     * Service pour modifier un cours.
+     *
+     * @param cours Cours : cours à modifier
+     *
+     * @return Cours : le cours modifié
+     */
+    public Cours updateCours(final Cours cours) {
+
+        if (cours.getIdCours() == null) {
+            throw new ModelException("L'identifiant du cours doit être non nul");
+        }
         return coursRepository.save(cours);
     }
 

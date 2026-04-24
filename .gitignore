@@ -3,7 +3,8 @@ target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-data.properties
+.allure
+allure-results/*.json
 
 ### Log, target and Javadoc ###
 *.log

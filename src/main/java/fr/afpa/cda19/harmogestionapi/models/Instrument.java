@@ -26,6 +26,10 @@ import lombok.NoArgsConstructor;
 @Table(name = "instrument")
 public class Instrument {
 
+    //--------------------------------------------------------------------------
+    // Attributs
+    //--------------------------------------------------------------------------
+
     /**
      * Identifiant de l'instrument.
      */
@@ -37,11 +41,30 @@ public class Instrument {
     /**
      * Nom de l'instrument.
      */
-    @Column(name = "libelle_instrument", unique = true, length = 50,
-            nullable = false)
+    @Column(name = "libelle_instrument")
     @NotBlank(message = "Un instrument doit avoir un nom")
     @Size(min = 3, max = 50,
           message = "Le nom de l'instrument doit faire entre trois "
                     + "et cinquante caractères de long")
     private String libelleInstrument;
+
+    //--------------------------------------------------------------------------
+    // Méthodes
+    //--------------------------------------------------------------------------
+
+    /**
+     * Méthode pour cloner un instrument DTO en instrument persistant.
+     *
+     * @param instrumentDTO instrument à cloner.
+     *
+     * @return instrument cloné.
+     */
+    public static Instrument clone(InstrumentDTO instrumentDTO) {
+
+        Instrument instrumentClone = new Instrument();
+        instrumentClone.setIdInstrument(instrumentDTO.getIdInstrument());
+        instrumentClone.setLibelleInstrument(instrumentDTO.getLibelleInstrument());
+
+        return instrumentClone;
+    }
 }
