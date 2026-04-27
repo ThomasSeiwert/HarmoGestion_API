@@ -71,7 +71,8 @@ public class CoursController {
 
         if (listeCours.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
+        }
+        else {
             return new ResponseEntity<>(listeCours, HttpStatus.OK);
         }
     }
@@ -93,7 +94,8 @@ public class CoursController {
 
         if (cours.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
+        }
+        else {
             return new ResponseEntity<>(cours.get(), HttpStatus.OK);
         }
     }
@@ -113,7 +115,8 @@ public class CoursController {
 
         if (result.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
+        }
+        else {
             Cours persistantCours = Cours.clone(cours);
             Cours savedCours = coursService.createCours(persistantCours);
             return new ResponseEntity<>(savedCours, HttpStatus.CREATED);
@@ -136,13 +139,11 @@ public class CoursController {
             @Valid final CoursDTO cours, final BindingResult result) {
 
         Optional<Cours> optionalCours = coursService.getCours(id);
-        if (optionalCours.isEmpty()) {
+        if (optionalCours.isEmpty() || result.hasErrors()) {
             // le cours doit exister dans la BDD
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else if (result.hasErrors()) {
-            // le cours ne doit pas avoir d'erreurs
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
+        }
+        else {
             Cours persistantCours = Cours.clone(cours);
             Cours savedCours = coursService.updateCours(persistantCours);
             return new ResponseEntity<>(savedCours, HttpStatus.OK);
@@ -165,7 +166,8 @@ public class CoursController {
         if (optionalCours.isEmpty()) {
             // le cours doit exister dans la BDD
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
+        }
+        else {
             coursService.deleteCours(id);
             return new ResponseEntity<>(HttpStatus.OK);
         }
