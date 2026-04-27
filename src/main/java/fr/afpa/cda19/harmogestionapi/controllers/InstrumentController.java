@@ -72,7 +72,8 @@ public class InstrumentController {
 
         if (instruments.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
+        }
+        else {
             return new ResponseEntity<>(instruments, HttpStatus.OK);
         }
     }
@@ -93,7 +94,8 @@ public class InstrumentController {
 
         if (instrument.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
+        }
+        else {
             return new ResponseEntity<>(instrument.get(), HttpStatus.OK);
         }
     }
@@ -116,13 +118,15 @@ public class InstrumentController {
         if (result.hasErrors()) {
             // l'instrument ne doit pas avoir d'erreurs
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
+        }
+        else {
             Instrument persistantInstrument = Instrument.clone(instrument);
             try {
                 Instrument savedInstrument =
                         instrumentService.createInstrument(persistantInstrument);
                 return new ResponseEntity<>(savedInstrument, HttpStatus.CREATED);
-            } catch (DataIntegrityViolationException _) {
+            }
+            catch (DataIntegrityViolationException _) {
                 // le libellé doit être unique
                 return new ResponseEntity<>("Ce libellé existe déjà",
                         HttpStatus.FORBIDDEN);
@@ -148,19 +152,18 @@ public class InstrumentController {
             @Valid final InstrumentDTO instrument, final BindingResult result) {
 
         Optional<Instrument> optionalInstrument = instrumentService.getInstrument(id);
-        if (optionalInstrument.isEmpty()) {
-            // l'instrument doit exister dans la BDD
+        if (optionalInstrument.isEmpty() || result.hasErrors()) {
+            // l'instrument doit exister dans la BDD et ne pas avoir d'erreurs
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else if (result.hasErrors()) {
-            // l'instrument ne doit pas avoir d'erreurs
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
+        }
+        else {
             Instrument persistantInstrument = Instrument.clone(instrument);
             try {
                 Instrument savedInstrument =
                         instrumentService.updateInstrument(persistantInstrument);
-                return new ResponseEntity<>(savedInstrument, HttpStatus.CREATED);
-            } catch (DataIntegrityViolationException _) {
+                return new ResponseEntity<>(savedInstrument, HttpStatus.OK);
+            }
+            catch (DataIntegrityViolationException _) {
                 // le libellé doit être unique
                 return new ResponseEntity<>("Ce libellé existe déjà",
                         HttpStatus.FORBIDDEN);
@@ -185,11 +188,13 @@ public class InstrumentController {
         if (optionalInstrument.isEmpty()) {
             // l'instrument doit exister dans la BDD
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
+        }
+        else {
             try {
                 instrumentService.deleteInstrument(id);
                 return new ResponseEntity<>(HttpStatus.OK);
-            } catch (DataIntegrityViolationException _) {
+            }
+            catch (DataIntegrityViolationException _) {
                 // l'instrument ne doit pas être utilisé
                 return new ResponseEntity<>("Vous ne pouvez pas supprimer"
                         + " cet instrument car il est encore utilisé",
