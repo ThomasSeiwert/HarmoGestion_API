@@ -64,13 +64,14 @@ public class CoursController {
      * ou statut 204 si aucun cours trouvé
      */
     @GetMapping("/cours")
-    public ResponseEntity<Iterable<Cours>> getProchainsCours() {
+    public ResponseEntity<Object> getProchainsCours() {
 
         ArrayList<Cours> listeCours =
                 (ArrayList<Cours>) coursService.getProchainsCours();
 
         if (listeCours.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("Il n'y a aucun cours prévu pour le moment",
+                    HttpStatus.NO_CONTENT);
         }
         else {
             return new ResponseEntity<>(listeCours, HttpStatus.OK);

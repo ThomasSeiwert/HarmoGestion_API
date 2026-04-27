@@ -65,13 +65,13 @@ public class MembreController {
      * ou statut 204 si aucun membre trouvé
      */
     @GetMapping("/membres")
-    public ResponseEntity<Iterable<Membre>> getMembres() {
+    public ResponseEntity<Object> getMembres() {
 
         ArrayList<Membre> membres =
                 (ArrayList<Membre>) membreService.getMembres();
 
         if (membres.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("Aucun membre trouvé", HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(membres, HttpStatus.OK);
         }

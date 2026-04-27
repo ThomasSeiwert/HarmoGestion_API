@@ -65,13 +65,13 @@ public class InstrumentController {
      * ou statut 204 si aucun instrument trouvé
      */
     @GetMapping("/instruments")
-    public ResponseEntity<Iterable<Instrument>> getInstruments() {
+    public ResponseEntity<Object> getInstruments() {
 
         ArrayList<Instrument> instruments =
                 (ArrayList<Instrument>) instrumentService.getInstruments();
 
         if (instruments.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("Aucun instrument trouvé", HttpStatus.NO_CONTENT);
         }
         else {
             return new ResponseEntity<>(instruments, HttpStatus.OK);

@@ -64,13 +64,14 @@ public class RepresentationController {
      * ou statut 204 si aucune représentation trouvée
      */
     @GetMapping("/representations")
-    public ResponseEntity<Iterable<Representation>> getProchainesRepresentations() {
+    public ResponseEntity<Object> getProchainesRepresentations() {
 
         ArrayList<Representation> representations =
                 (ArrayList<Representation>) representationService.getProchainesRepresentations();
 
         if (representations.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("Il n'y a aucune représentation prévue pour le moment",
+                    HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(representations, HttpStatus.OK);
         }
