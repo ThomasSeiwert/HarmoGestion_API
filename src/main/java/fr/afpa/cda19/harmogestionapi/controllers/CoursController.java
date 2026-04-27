@@ -140,7 +140,7 @@ public class CoursController {
 
         Optional<Cours> optionalCours = coursService.getCours(id);
         if (optionalCours.isEmpty() || result.hasErrors()) {
-            // le cours doit exister dans la BDD
+            // le cours doit exister dans la BDD et ne doit pas avoir d'erreurs
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         else {
