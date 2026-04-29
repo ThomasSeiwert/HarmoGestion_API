@@ -61,7 +61,7 @@ public class CoursController {
      * Pour une requête GET et une URL "/cours", retourne la liste des prochains cours.
      *
      * @return la liste des prochains cours et statut 200,
-     * ou statut 204 si aucun cours trouvé
+     * ou statut 404 si aucun cours trouvé
      */
     @GetMapping("/cours")
     public ResponseEntity<Object> getProchainsCours() {
@@ -70,8 +70,8 @@ public class CoursController {
                 (ArrayList<Cours>) coursService.getProchainsCours();
 
         if (listeCours.isEmpty()) {
-            return new ResponseEntity<>("Il n'y a aucun cours prévu pour le moment",
-                    HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("Aucun cours prévu pour le moment",
+                    HttpStatus.NOT_FOUND);
         }
         else {
             return new ResponseEntity<>(listeCours, HttpStatus.OK);

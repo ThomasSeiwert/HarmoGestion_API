@@ -56,7 +56,7 @@ class CoursControllerTest {
     @Severity(SeverityLevel.CRITICAL)
     void getAllCoursTest() throws Exception {
 
-        mockMvc.perform(get("/cours")).andExpect(status().isNoContent());
+        mockMvc.perform(get("/cours")).andExpect(status().isNotFound());
     }
 
     @Test

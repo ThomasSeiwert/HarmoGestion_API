@@ -62,7 +62,7 @@ public class InstrumentController {
      * Endpoint de récupèration de la liste des instruments.
      *
      * @return la liste des instruments et statut 200,
-     * ou statut 204 si aucun instrument trouvé
+     * ou statut 404 si aucun instrument trouvé
      */
     @GetMapping("/instruments")
     public ResponseEntity<Object> getInstruments() {
@@ -71,7 +71,7 @@ public class InstrumentController {
                 (ArrayList<Instrument>) instrumentService.getInstruments();
 
         if (instruments.isEmpty()) {
-            return new ResponseEntity<>("Aucun instrument trouvé", HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("Aucun instrument trouvé", HttpStatus.NOT_FOUND);
         }
         else {
             return new ResponseEntity<>(instruments, HttpStatus.OK);

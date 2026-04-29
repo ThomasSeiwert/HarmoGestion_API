@@ -61,7 +61,7 @@ public class RepresentationController {
      * retourne la liste des représentations.
      *
      * @return la liste des prochaines représentations et statut 200,
-     * ou statut 204 si aucune représentation trouvée
+     * ou statut 404 si aucune représentation trouvée
      */
     @GetMapping("/representations")
     public ResponseEntity<Object> getProchainesRepresentations() {
@@ -70,8 +70,8 @@ public class RepresentationController {
                 (ArrayList<Representation>) representationService.getProchainesRepresentations();
 
         if (representations.isEmpty()) {
-            return new ResponseEntity<>("Il n'y a aucune représentation prévue pour le moment",
-                    HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("Aucune représentation prévue pour le moment",
+                    HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(representations, HttpStatus.OK);
         }

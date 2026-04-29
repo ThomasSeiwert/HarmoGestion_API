@@ -35,7 +35,7 @@ class InstrumentControllerTest {
                  + " la requête de récupération de la liste des instruments")
     @Severity(SeverityLevel.CRITICAL)
     void getInstrumentsTest() throws Exception {
-        mockMvc.perform(get("/instruments")).andExpect(status().isNoContent());
+        mockMvc.perform(get("/instruments")).andExpect(status().isNotFound());
     }
 
     @Test

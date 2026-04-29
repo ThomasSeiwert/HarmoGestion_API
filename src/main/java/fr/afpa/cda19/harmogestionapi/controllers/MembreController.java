@@ -62,7 +62,7 @@ public class MembreController {
      * Endpoint de récupèration de la liste des membres.
      *
      * @return la liste des membres et statut 200,
-     * ou statut 204 si aucun membre trouvé
+     * ou statut 404 si aucun membre trouvé
      */
     @GetMapping("/membres")
     public ResponseEntity<Object> getMembres() {
@@ -71,7 +71,7 @@ public class MembreController {
                 (ArrayList<Membre>) membreService.getMembres();
 
         if (membres.isEmpty()) {
-            return new ResponseEntity<>("Aucun membre trouvé", HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("Aucun membre trouvé", HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(membres, HttpStatus.OK);
         }
