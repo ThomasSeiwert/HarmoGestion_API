@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -208,7 +209,7 @@ class CoursControllerIntegrationTest {
 
         final String json = new ObjectMapper().writeValueAsString(COURS);
 
-        mockMvc.perform(put("/cours/2")
+        mockMvc.perform(delete("/cours/2")
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -223,7 +224,7 @@ class CoursControllerIntegrationTest {
 
         final String json = new ObjectMapper().writeValueAsString(COURS);
 
-        mockMvc.perform(put("/cours/5")
+        mockMvc.perform(delete("/cours/5")
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
