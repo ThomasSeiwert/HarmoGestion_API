@@ -6,7 +6,7 @@ import fr.afpa.cda19.harmogestionapi.models.Membre;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Description;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -42,8 +43,8 @@ class CoursControllerIntegrationTest {
 
     private static final Cours COURS = new Cours();
 
-    @BeforeAll
-    static void initCours() {
+    @BeforeEach
+    void initCours() {
 
         COURS.setDateCours(LocalDateTime.now().plusDays(2));
         COURS.setDureeCours((byte) 60);
@@ -136,6 +137,63 @@ class CoursControllerIntegrationTest {
         mockMvc.perform(post("/cours")
                                 .content(json)
                                 .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("Test unitaire controller pour modifier un cours valide avec l'identifiant 1")
+    @Description("Envoi d'une requête pour créer un cours valide avec l'identifiant 1."
+            + " On s'attend à un statut 200.")
+    @Severity(SeverityLevel.CRITICAL)
+    void updateCoursTestOk() throws Exception {
+
+        COURS.setIdCours(1);
+        final String json = new ObjectMapper().writeValueAsString(COURS);
+
+        mockMvc.perform(put("/cours/1")
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.dureeCours", is(60)));
+    }
+
+    @Test
+    @DisplayName("Test unitaire controller pour modifier un cours non valide")
+    @Description("Envoi d'une requête pour créer un cours l'identifiant 5, un cours non valide"
+            + " et/ou un id nul. On s'attend à un statut 400.")
+    @Severity(SeverityLevel.CRITICAL)
+    void updateCoursTestKo() throws Exception {
+
+        COURS.setIdCours(5);
+        String json = new ObjectMapper().writeValueAsString(COURS);
+
+        mockMvc.perform(put("/cours/5")
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        COURS.setIdCours(null);
+        json = new ObjectMapper().writeValueAsString(COURS);
+
+        mockMvc.perform(put("/cours/1")
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        COURS.setIdCours(1);
+        json = new ObjectMapper().writeValueAsString(COURS);
+
+        mockMvc.perform(put("/cours/2")
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        COURS.setDureeCours((byte) 10);
+        json = new ObjectMapper().writeValueAsString(COURS);
+
+        mockMvc.perform(put("/cours/1")
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 }
