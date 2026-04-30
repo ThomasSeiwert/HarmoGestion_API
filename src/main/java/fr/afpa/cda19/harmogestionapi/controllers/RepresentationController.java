@@ -78,7 +78,7 @@ public class RepresentationController {
     }
 
     /**
-     * Pour une requête GET et une URL "/representations/'id'",
+     * Pour une requête GET et une URL "/representation/'id'",
      * retourne la représentation correspondant à l'identifiant demandé.
      *
      * @param id int : identifiant de la représentation demandée.
@@ -86,7 +86,7 @@ public class RepresentationController {
      * @return la représentation correspondant à l'id et statut 200,
      * ou statut 400 si aucune représentation ne correspondant à l'identifiant
      */
-    @GetMapping("/representations/{id}")
+    @GetMapping("/representation/{id}")
     public ResponseEntity<Representation> getRepresentation(
             @PathVariable final int id) {
 
@@ -101,7 +101,7 @@ public class RepresentationController {
     }
 
     /**
-     * Pour une requête POST et une URL "/representations",
+     * Pour une requête POST et une URL "/representation",
      * crée la représentation demandée.
      *
      * @param representation Representation : représentation à créer
@@ -110,7 +110,7 @@ public class RepresentationController {
      * @return la représentation créée et un statut 201,
      * ou 400 pour une représentation non valide
      */
-    @PostMapping("/representations")
+    @PostMapping("/representation")
     public ResponseEntity<Representation> createRepresentation(
             @RequestBody
             @Valid final RepresentationDTO representation, final BindingResult result) {
@@ -126,7 +126,7 @@ public class RepresentationController {
     }
 
     /**
-     * Pour une requête PUT et une URL "/representations/'id'",
+     * Pour une requête PUT et une URL "/representation/'id'",
      * modifie la représentation demandée.
      *
      * @param id             int : identifiant de la représentation à modifier
@@ -136,7 +136,7 @@ public class RepresentationController {
      * @return représentation modifiée avec un statut 200,
      * ou 400 pour une représentation non valide
      */
-    @PutMapping("/representations/{id}")
+    @PutMapping("/representation/{id}")
     public ResponseEntity<Object> updateRepresentation(
             @PathVariable final int id,
             @RequestBody
@@ -160,12 +160,12 @@ public class RepresentationController {
     }
 
     /**
-     * Pour une requête DELETE et une URL "/representations/'id'",
+     * Pour une requête DELETE et une URL "/representation/'id'",
      * supprime la représentation demandée.
      *
      * @param id int : identifiant de la représentation à supprimer.
      */
-    @DeleteMapping("/representations/{id}")
+    @DeleteMapping("/representation/{id}")
     public ResponseEntity<Representation> deleteRepresentation(
             @PathVariable final int id) {
 
