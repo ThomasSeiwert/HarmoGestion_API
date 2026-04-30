@@ -111,7 +111,7 @@ class CoursControllerIntegrationTest {
     @DisplayName("Test unitaire controller pour créer un cours avec un identifiant non nul et/ou invalide")
     @Description("Envoi d'une requête pour créer un cours avec un identifiant non nul et/ou invalide."
                  + " On s'attend à un statut 400.")
-    @Severity(SeverityLevel.NORMAL)
+    @Severity(SeverityLevel.CRITICAL)
     void createCoursTestKo() throws Exception {
 
         COURS.setIdCours(1);
