@@ -118,7 +118,7 @@ public class Representation {
         representationClone.setIdRepresentation(representationDTO.getIdRepresentation());
         representationClone.setNomRepresentation(representationDTO.getNomRepresentation());
         representationClone.setDateRepresentation(representationDTO.getDateRepresentation());
-        representationClone.setLieuRepresentation(representationClone.getLieuRepresentation());
+        representationClone.setLieuRepresentation(representationDTO.getLieuRepresentation());
         representationClone.setParticipants(representationDTO.getParticipants());
         representationClone.setInstruments(representationDTO.getInstruments());
 
