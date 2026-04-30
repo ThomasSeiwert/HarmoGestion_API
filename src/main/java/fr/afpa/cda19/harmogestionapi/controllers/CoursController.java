@@ -141,8 +141,10 @@ public class CoursController {
             @Valid final CoursDTO cours, final BindingResult result) {
 
         Optional<Cours> optionalCours = coursService.getCours(id);
-        if (optionalCours.isEmpty() || result.hasErrors() || cours.getIdCours() == null) {
-            // le cours doit exister dans la BDD, ne doit pas avoir d'erreurs et avoir un id non nul
+        if (optionalCours.isEmpty() || result.hasErrors() ||
+                cours.getIdCours() == null || id != cours.getIdCours()) {
+            // le cours doit exister dans la BDD, ne doit pas avoir d'erreurs,
+            // doit avoir un id non nul, et avoir le même id que dans l'uri
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         else {

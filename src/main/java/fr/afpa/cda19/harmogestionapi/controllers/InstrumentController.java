@@ -152,8 +152,10 @@ public class InstrumentController {
             @Valid final InstrumentDTO instrument, final BindingResult result) {
 
         Optional<Instrument> optionalInstrument = instrumentService.getInstrument(id);
-        if (optionalInstrument.isEmpty() || result.hasErrors() || instrument.getIdInstrument() == null) {
-            // l'instrument doit exister dans la BDD, ne pas avoir d'erreurs, et avoir un id non nul
+        if (optionalInstrument.isEmpty() || result.hasErrors() ||
+                instrument.getIdInstrument() == null || id != instrument.getIdInstrument()) {
+            // l'instrument doit exister dans la BDD, ne pas avoir d'erreurs,
+            // doit avoir un id non nul, et avoir le même id que dans l'uri
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         else {

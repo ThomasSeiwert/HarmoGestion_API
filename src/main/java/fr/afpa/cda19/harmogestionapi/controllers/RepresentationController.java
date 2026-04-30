@@ -150,8 +150,10 @@ public class RepresentationController {
         Optional<Representation> optionalRepresentation =
                 representationService.getRepresentation(id);
 
-        if (optionalRepresentation.isEmpty() || result.hasErrors() || representation.getIdRepresentation() == null) {
-            // la représentation doit exister dans la BDD, ne doit pas avoir d'erreurs, et avoir un id non nul
+        if (optionalRepresentation.isEmpty() || result.hasErrors() ||
+                representation.getIdRepresentation() == null || id != representation.getIdRepresentation()) {
+            // la représentation doit exister dans la BDD, ne doit pas avoir d'erreurs,
+            // doit avoir un id non nul, et avoir le même id que dans l'uri
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         else {

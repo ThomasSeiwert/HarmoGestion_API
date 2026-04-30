@@ -142,8 +142,10 @@ public class MembreController {
             @Valid final MembreDTO membre, final BindingResult result) {
 
         Optional<Membre> optionalMembre = membreService.getMembre(id);
-        if (optionalMembre.isEmpty() || result.hasErrors() || membre.getIdMembre() == null) {
-            // le membre doit exister dans la BDD, ne doit pas avoir d'erreurs, et avoir un id non nul
+        if (optionalMembre.isEmpty() || result.hasErrors() ||
+                membre.getIdMembre() == null || id != membre.getIdMembre()) {
+            // le membre doit exister dans la BDD, ne doit pas avoir d'erreurs,
+            // doit avoir un id non nul, et avoir le même id que dans l'uri
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         else {
