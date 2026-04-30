@@ -126,12 +126,14 @@ VALUES ('Hendrix', 'Jimmi', NOW()),
 -- Données de la table `Cours`
 --
 INSERT INTO cours (date_cours, duree_cours, id_instrument, id_membre_enseignant)
-VALUES (DATE_ADD(NOW(), INTERVAL 1 DAY), 45, 1, 1);
+VALUES (DATE_ADD(NOW(), INTERVAL 1 DAY), 45, 1, 1),
+       (DATE_ADD(NOW(), INTERVAL 2 DAY), 45, 1, 1);
 
 --
 -- Données de la table `Participer_Cours`
 --
 INSERT INTO participer_cours (id_membre_apprenant, id_cours)
-VALUES (2,1);
+VALUES (2, 1),
+       (2, 2);
 
 COMMIT;
