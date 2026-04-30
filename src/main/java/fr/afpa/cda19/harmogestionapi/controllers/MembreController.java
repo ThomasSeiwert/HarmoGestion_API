@@ -72,7 +72,8 @@ public class MembreController {
 
         if (membres.isEmpty()) {
             return new ResponseEntity<>("Aucun membre trouvé", HttpStatus.NOT_FOUND);
-        } else {
+        }
+        else {
             return new ResponseEntity<>(membres, HttpStatus.OK);
         }
     }
@@ -93,7 +94,8 @@ public class MembreController {
 
         if (membre.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
+        }
+        else {
             return new ResponseEntity<>(membre.get(), HttpStatus.OK);
         }
     }
@@ -112,11 +114,13 @@ public class MembreController {
             @RequestBody
             @Valid final MembreDTO membre, final BindingResult result) {
 
-        if (result.hasErrors()) {
+        if (result.hasErrors() || membre.getIdMembre() != null) {
+            // le membre ne doit pas avoir d'erreurs, et avoir un id nul
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
+        }
+        else {
             Membre persistantMembre = Membre.clone(membre);
-            Membre savedMembre = membreService.createMembre(persistantMembre);
+            Membre savedMembre = membreService.saveMembre(persistantMembre);
             return new ResponseEntity<>(savedMembre, HttpStatus.CREATED);
         }
     }
@@ -138,15 +142,13 @@ public class MembreController {
             @Valid final MembreDTO membre, final BindingResult result) {
 
         Optional<Membre> optionalMembre = membreService.getMembre(id);
-        if (optionalMembre.isEmpty()) {
-            // le membre doit exister dans la BDD
+        if (optionalMembre.isEmpty() || result.hasErrors() || membre.getIdMembre() == null) {
+            // le membre doit exister dans la BDD, ne doit pas avoir d'erreurs, et avoir un id non nul
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else if (result.hasErrors()) {
-            // le membre ne doit pas avoir d'erreurs
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
+        }
+        else {
             Membre persistantMembre = Membre.clone(membre);
-            Membre savedMembre = membreService.updateMembre(persistantMembre);
+            Membre savedMembre = membreService.saveMembre(persistantMembre);
             return new ResponseEntity<>(savedMembre, HttpStatus.OK);
         }
     }
@@ -164,11 +166,13 @@ public class MembreController {
         if (optionalMembre.isEmpty()) {
             // le membre doit exister dans la BDD
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
+        }
+        else {
             try {
                 membreService.deleteMembre(id);
                 return new ResponseEntity<>(HttpStatus.OK);
-            } catch (DataIntegrityViolationException _) {
+            }
+            catch (DataIntegrityViolationException _) {
                 // le membre ne doit pas être utilisé
                 return new ResponseEntity<>("Vous ne pouvez pas supprimer"
                         + " ce membre car il est encore utilisé",

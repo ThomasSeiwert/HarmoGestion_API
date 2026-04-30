@@ -1,6 +1,5 @@
 package fr.afpa.cda19.harmogestionapi.services;
 
-import fr.afpa.cda19.harmogestionapi.exceptions.ModelException;
 import fr.afpa.cda19.harmogestionapi.models.Representation;
 import fr.afpa.cda19.harmogestionapi.repositories.RepresentationRepository;
 import lombok.Data;
@@ -71,32 +70,14 @@ public class RepresentationService {
     }
 
     /**
-     * Service pour créer une représentation.
+     * Service pour créer/modifier une représentation.
      *
-     * @param representation Representation : représentation à créer
+     * @param representation Representation : représentation à créer/modifier
      *
-     * @return Representation : la représentation créée
+     * @return Representation : la représentation créée/modifiée
      */
-    public Representation createRepresentation(final Representation representation) {
+    public Representation saveRepresentation(final Representation representation) {
 
-        if (representation.getIdRepresentation() != null) {
-            throw new ModelException("L'identifiant doit être nul");
-        }
-        return representationRepository.save(representation);
-    }
-
-    /**
-     * Service pour modifier une représentation.
-     *
-     * @param representation Representation : représentation à modifier
-     *
-     * @return Representation : la représentation modifiée
-     */
-    public Representation updateRepresentation(final Representation representation) {
-
-        if (representation.getIdRepresentation() == null) {
-            throw new ModelException("L'identifiant doit être non nul");
-        }
         return representationRepository.save(representation);
     }
 

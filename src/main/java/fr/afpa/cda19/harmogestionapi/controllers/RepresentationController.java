@@ -49,6 +49,7 @@ public class RepresentationController {
      */
     @Autowired
     public RepresentationController(final RepresentationService representationService) {
+
         this.representationService = representationService;
     }
 
@@ -72,7 +73,8 @@ public class RepresentationController {
         if (representations.isEmpty()) {
             return new ResponseEntity<>("Aucune représentation prévue pour le moment",
                     HttpStatus.NOT_FOUND);
-        } else {
+        }
+        else {
             return new ResponseEntity<>(representations, HttpStatus.OK);
         }
     }
@@ -95,7 +97,8 @@ public class RepresentationController {
 
         if (representation.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
+        }
+        else {
             return new ResponseEntity<>(representation.get(), HttpStatus.OK);
         }
     }
@@ -115,12 +118,14 @@ public class RepresentationController {
             @RequestBody
             @Valid final RepresentationDTO representation, final BindingResult result) {
 
-        if (result.hasErrors()) {
+        if (result.hasErrors() || representation.getIdRepresentation() != null) {
+            // la représentation ne doit pas avoir d'erreurs, et avoir un id nul
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
+        }
+        else {
             Representation persistantRepresentation = Representation.clone(representation);
             Representation savedRepresentation =
-                    representationService.createRepresentation(persistantRepresentation);
+                    representationService.saveRepresentation(persistantRepresentation);
             return new ResponseEntity<>(savedRepresentation, HttpStatus.CREATED);
         }
     }
@@ -145,16 +150,14 @@ public class RepresentationController {
         Optional<Representation> optionalRepresentation =
                 representationService.getRepresentation(id);
 
-        if (optionalRepresentation.isEmpty()) {
-            // la représentation doit exister dans la BDD
+        if (optionalRepresentation.isEmpty() || result.hasErrors() || representation.getIdRepresentation() == null) {
+            // la représentation doit exister dans la BDD, ne doit pas avoir d'erreurs, et avoir un id non nul
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else if (result.hasErrors()) {
-            // la représentation ne doit pas avoir d'erreurs
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
+        }
+        else {
             Representation persistantRepresentation = Representation.clone(representation);
             Representation savedRepresentation =
-                    representationService.updateRepresentation(persistantRepresentation);
+                    representationService.saveRepresentation(persistantRepresentation);
             return new ResponseEntity<>(savedRepresentation, HttpStatus.CREATED);
         }
     }
@@ -175,7 +178,8 @@ public class RepresentationController {
         if (optionalRepresentation.isEmpty()) {
             // la représentation doit exister dans la BDD
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
+        }
+        else {
             representationService.deleteRepresentation(id);
             return new ResponseEntity<>(HttpStatus.OK);
         }

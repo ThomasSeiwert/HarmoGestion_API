@@ -1,6 +1,5 @@
 package fr.afpa.cda19.harmogestionapi.services;
 
-import fr.afpa.cda19.harmogestionapi.exceptions.ModelException;
 import fr.afpa.cda19.harmogestionapi.repositories.MembreRepository;
 import fr.afpa.cda19.harmogestionapi.models.Membre;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,32 +68,14 @@ public class MembreService {
     }
 
     /**
-     * Enregistrement d'un nouveau membre.
+     * Enregistrement/modification d'un membre.
      *
-     * @param membre Membre à créer
+     * @param membre Membre à créer/modifier
      *
-     * @return Membre après création
+     * @return Membre après création/modification
      */
-    public Membre createMembre(final Membre membre) {
+    public Membre saveMembre(final Membre membre) {
 
-        if (membre.getIdMembre() != null) {
-            throw new ModelException("L'identifiant doit être nul");
-        }
-        return membreRepository.save(membre);
-    }
-
-    /**
-     * Modification d'un membre.
-     *
-     * @param membre Membre à modifier
-     *
-     * @return Membre après modification
-     */
-    public Membre updateMembre(final Membre membre) {
-
-        if (membre.getIdMembre() == null) {
-            throw new ModelException("L'identifiant doit être non nul");
-        }
         return membreRepository.save(membre);
     }
 

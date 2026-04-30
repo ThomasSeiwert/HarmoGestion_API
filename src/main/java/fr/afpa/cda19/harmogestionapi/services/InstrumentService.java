@@ -1,6 +1,5 @@
 package fr.afpa.cda19.harmogestionapi.services;
 
-import fr.afpa.cda19.harmogestionapi.exceptions.ModelException;
 import fr.afpa.cda19.harmogestionapi.models.Instrument;
 import fr.afpa.cda19.harmogestionapi.repositories.InstrumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,32 +63,14 @@ public class InstrumentService {
     }
 
     /**
-     * Enregistrement d'un nouvel instrument.
+     * Enregistrement/mofification d'un instrument.
      *
-     * @param instrument l'instrument à créer
+     * @param instrument l'instrument à créer/modifier
      *
-     * @return l'instrument après création
+     * @return l'instrument après création/modification
      */
-    public Instrument createInstrument(Instrument instrument) {
+    public Instrument saveInstrument(Instrument instrument) {
 
-        if (instrument.getIdInstrument() != null) {
-            throw new ModelException("L'identifiant doit être nul");
-        }
-        return instrumentRepository.save(instrument);
-    }
-
-    /**
-     * Modification d'un instrument.
-     *
-     * @param instrument l'instrument à modifier
-     *
-     * @return l'instrument après modification
-     */
-    public Instrument updateInstrument(Instrument instrument) {
-
-        if (instrument.getIdInstrument() == null) {
-            throw new ModelException("L'identifiant doit être non nul");
-        }
         return instrumentRepository.save(instrument);
     }
 

@@ -114,12 +114,13 @@ public class CoursController {
             @RequestBody
             @Valid final CoursDTO cours, final BindingResult result) {
 
-        if (result.hasErrors()) {
+        if (result.hasErrors() || cours.getIdCours() != null) {
+            // le cours ne doit pas avoir d'erreurs et avoir un id null
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         else {
             Cours persistantCours = Cours.clone(cours);
-            Cours savedCours = coursService.createCours(persistantCours);
+            Cours savedCours = coursService.saveCours(persistantCours);
             return new ResponseEntity<>(savedCours, HttpStatus.CREATED);
         }
     }
@@ -140,13 +141,13 @@ public class CoursController {
             @Valid final CoursDTO cours, final BindingResult result) {
 
         Optional<Cours> optionalCours = coursService.getCours(id);
-        if (optionalCours.isEmpty() || result.hasErrors()) {
-            // le cours doit exister dans la BDD et ne doit pas avoir d'erreurs
+        if (optionalCours.isEmpty() || result.hasErrors() || cours.getIdCours() == null) {
+            // le cours doit exister dans la BDD, ne doit pas avoir d'erreurs et avoir un id non nul
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         else {
             Cours persistantCours = Cours.clone(cours);
-            Cours savedCours = coursService.updateCours(persistantCours);
+            Cours savedCours = coursService.saveCours(persistantCours);
             return new ResponseEntity<>(savedCours, HttpStatus.OK);
         }
     }

@@ -115,15 +115,15 @@ public class InstrumentController {
             @RequestBody
             @Valid final InstrumentDTO instrument, final BindingResult result) {
 
-        if (result.hasErrors()) {
-            // l'instrument ne doit pas avoir d'erreurs
+        if (result.hasErrors() || instrument.getIdInstrument() != null) {
+            // l'instrument ne doit pas avoir d'erreurs et l'id doit être nul
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         else {
             Instrument persistantInstrument = Instrument.clone(instrument);
             try {
                 Instrument savedInstrument =
-                        instrumentService.createInstrument(persistantInstrument);
+                        instrumentService.saveInstrument(persistantInstrument);
                 return new ResponseEntity<>(savedInstrument, HttpStatus.CREATED);
             }
             catch (DataIntegrityViolationException _) {
@@ -152,15 +152,15 @@ public class InstrumentController {
             @Valid final InstrumentDTO instrument, final BindingResult result) {
 
         Optional<Instrument> optionalInstrument = instrumentService.getInstrument(id);
-        if (optionalInstrument.isEmpty() || result.hasErrors()) {
-            // l'instrument doit exister dans la BDD et ne pas avoir d'erreurs
+        if (optionalInstrument.isEmpty() || result.hasErrors() || instrument.getIdInstrument() == null) {
+            // l'instrument doit exister dans la BDD, ne pas avoir d'erreurs, et avoir un id non nul
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         else {
             Instrument persistantInstrument = Instrument.clone(instrument);
             try {
                 Instrument savedInstrument =
-                        instrumentService.updateInstrument(persistantInstrument);
+                        instrumentService.saveInstrument(persistantInstrument);
                 return new ResponseEntity<>(savedInstrument, HttpStatus.OK);
             }
             catch (DataIntegrityViolationException _) {

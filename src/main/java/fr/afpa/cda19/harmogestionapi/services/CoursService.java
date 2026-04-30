@@ -1,6 +1,5 @@
 package fr.afpa.cda19.harmogestionapi.services;
 
-import fr.afpa.cda19.harmogestionapi.exceptions.ModelException;
 import fr.afpa.cda19.harmogestionapi.models.Cours;
 import fr.afpa.cda19.harmogestionapi.repositories.CoursRepository;
 import lombok.Data;
@@ -71,32 +70,14 @@ public class CoursService {
     }
 
     /**
-     * Service pour créer un cours.
+     * Service pour créer/modifier un cours.
      *
-     * @param cours Cours : cours à créer
+     * @param cours Cours : cours à créer/modifier
      *
-     * @return Cours : le cours créé
+     * @return Cours : le cours créé/modifié
      */
-    public Cours createCours(final Cours cours) {
+    public Cours saveCours(final Cours cours) {
 
-        if (cours.getIdCours() != null) {
-            throw new ModelException("L'identifiant du cours doit être nul");
-        }
-        return coursRepository.save(cours);
-    }
-
-    /**
-     * Service pour modifier un cours.
-     *
-     * @param cours Cours : cours à modifier
-     *
-     * @return Cours : le cours modifié
-     */
-    public Cours updateCours(final Cours cours) {
-
-        if (cours.getIdCours() == null) {
-            throw new ModelException("L'identifiant du cours doit être non nul");
-        }
         return coursRepository.save(cours);
     }
 
