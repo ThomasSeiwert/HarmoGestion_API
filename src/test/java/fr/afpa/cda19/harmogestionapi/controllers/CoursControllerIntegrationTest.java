@@ -77,7 +77,7 @@ class CoursControllerIntegrationTest {
 
         mockMvc.perform(get("/cours/1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.dureeCours", is(1)));
+                .andExpect(jsonPath("$.idCours", is(1)));
     }
 
     @Test
@@ -92,7 +92,7 @@ class CoursControllerIntegrationTest {
     }
 
     @Test
-    @DisplayName("Test unitaire controller pour créer un cours valide avec un identifiant nul")
+    @DisplayName("Test d'intégration controller pour créer un cours valide avec un identifiant nul")
     @Description("Envoi d'une requête pour créer un cours valide avec un identifiant nul."
             + " On s'attend à un statut 201.")
     @Severity(SeverityLevel.CRITICAL)
@@ -105,12 +105,12 @@ class CoursControllerIntegrationTest {
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.idCours", is(2)))
+                .andExpect(jsonPath("$.idCours", is(3)))
                 .andExpect(jsonPath("$.dureeCours", is(60)));
     }
 
     @Test
-    @DisplayName("Test unitaire controller pour créer un cours avec un identifiant non nul et/ou invalide")
+    @DisplayName("Test d'intégration controller pour créer un cours avec un identifiant non nul et/ou invalide")
     @Description("Envoi d'une requête pour créer un cours avec un identifiant non nul et/ou invalide."
             + " On s'attend à un statut 400.")
     @Severity(SeverityLevel.CRITICAL)
@@ -142,8 +142,8 @@ class CoursControllerIntegrationTest {
     }
 
     @Test
-    @DisplayName("Test unitaire controller pour modifier un cours valide avec l'identifiant 1")
-    @Description("Envoi d'une requête pour créer un cours valide avec l'identifiant 1."
+    @DisplayName("Test d'intégration controller pour modifier un cours valide avec l'identifiant 1")
+    @Description("Envoi d'une requête pour modifier un cours valide avec l'identifiant 1."
             + " On s'attend à un statut 200.")
     @Severity(SeverityLevel.CRITICAL)
     void updateCoursTestOk() throws Exception {
@@ -160,8 +160,8 @@ class CoursControllerIntegrationTest {
     }
 
     @Test
-    @DisplayName("Test unitaire controller pour modifier un cours non valide")
-    @Description("Envoi d'une requête pour créer un cours l'identifiant 5, un cours non valide"
+    @DisplayName("Test d'intégration controller pour modifier un cours non valide")
+    @Description("Envoi d'une requête pour modifier un cours l'identifiant 5, un cours non valide"
             + " et/ou un id nul. On s'attend à un statut 400.")
     @Severity(SeverityLevel.CRITICAL)
     void updateCoursTestKo() throws Exception {
@@ -194,6 +194,36 @@ class CoursControllerIntegrationTest {
         json = new ObjectMapper().writeValueAsString(COURS);
 
         mockMvc.perform(put("/cours/1")
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("Test d'intégration controller pour supprimer un cours avec l'identifiant 2")
+    @Description("Envoi d'une requête pour supprimer un cours avec l'identifiant 2."
+            + " On s'attend à un statut 200.")
+    @Severity(SeverityLevel.CRITICAL)
+    void deleteCoursTestOk() throws Exception {
+
+        final String json = new ObjectMapper().writeValueAsString(COURS);
+
+        mockMvc.perform(put("/cours/2")
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Test d'intégration controller pour supprimer un cours avec l'identifiant 5")
+    @Description("Envoi d'une requête pour supprimer un cours avec l'identifiant 5."
+            + " On s'attend à un statut 400.")
+    @Severity(SeverityLevel.CRITICAL)
+    void deleteCoursTestKo() throws Exception {
+
+        final String json = new ObjectMapper().writeValueAsString(COURS);
+
+        mockMvc.perform(put("/cours/5")
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
